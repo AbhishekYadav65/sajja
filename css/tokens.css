@@ -1,0 +1,50 @@
+/* ==========================================================================
+   TOKENS
+   Colours, fonts and the sizes you are most likely to tweak.
+   Change a value here and it updates everywhere on the page.
+   ========================================================================== */
+
+:root {
+  /* --- Brand colours ----------------------------------------------------- */
+  --color-wine:        #5a1226;  /* burgundy: text on pink, dark accents    */
+  --color-wine-light:  #7d1f3b;  /* burgundy: top-left of the hero gradient */
+  --color-wine-dark:   #3d0b19;  /* burgundy: bottom-right of the gradient  */
+  --color-pink:        #f8cfdb;  /* baby pink: main accent                  */
+  --color-pink-deep:   #d4708b;  /* baby pink, darker (shading on stops)    */
+  --color-blush:       #fde8ee;  /* very light pink: footer, card backing   */
+  --color-white:       #ffffff;
+
+  /* Edges that give buttons and stops their 3D thickness */
+  --color-button-edge: #d58aa2;
+  --color-stop-edge:   #8d2c49;
+
+  /* --- Fonts ------------------------------------------------------------- */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body:    "DM Sans", system-ui, sans-serif;
+
+  /* --- Stops on the pathway --------------------------------------------- */
+  /* cqw = 1% of the hero artboard width, so stops scale with the screen.    */
+  --stop-width:      max(56px, 5.2cqw);
+  --stop-height:     max(30px, 2.8cqw);
+  --stop-start-size: max(46px, 3.9cqw);
+  --stop-thickness:  0.9cqw;
+  --label-width:     max(11.5cqw, 120px);
+
+  /* --- Motion ------------------------------------------------------------ */
+  --float-distance: -12px;  /* how far cards bob up and down  */
+  --float-duration: 7s;
+  --tilt-strength-y: 9deg;  /* mouse tilt, left/right         */
+  --tilt-strength-x: 7deg;  /* mouse tilt, up/down            */
+}
+
+/* Slightly deeper burgundy when the visitor's device is in dark mode */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-wine:      #4f0f21;
+    --color-wine-dark: #33081a;
+  }
+}
+:root[data-theme="dark"] {
+  --color-wine:      #4f0f21;
+  --color-wine-dark: #33081a;
+}

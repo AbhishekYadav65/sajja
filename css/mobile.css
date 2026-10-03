@@ -1,0 +1,102 @@
+/* ==========================================================================
+   MOBILE (screens 900px wide or less)
+   The curved pathway becomes a vertical timeline and everything stacks.
+   If you change 900px here, change MOBILE_MAX_WIDTH in js/config.js too.
+   ========================================================================== */
+
+@media (max-width: 900px) {
+
+  /* Page: stack everything in one column */
+  .hero {
+    display: block;
+    min-height: 0;
+    padding: 96px 20px 36px;
+  }
+  .hero__board {
+    width: auto;
+    aspect-ratio: auto;
+    container-type: normal;
+    perspective: none;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* Things that only make sense on the curved desktop layout */
+  .site-nav__links,
+  .trail,
+  .parcel,
+  .card--heart { display: none; }
+
+  .site-nav { padding: 12px 20px; }
+
+  /* Headline: back into normal flow */
+  .headline { position: static; width: auto; }
+  .headline__title { font-size: 36px; }
+  .headline__text  { font-size: 15px; }
+
+  /* Bag photos: two side by side */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .card {
+    position: static;
+    width: auto;
+    height: 210px;
+    transform: none;
+    animation: none;
+  }
+  .card--tote { grid-column: 2; grid-row: 1; height: 260px; }
+
+  /* Steps: vertical timeline with a dotted line on the left */
+  .stops {
+    display: grid;
+    gap: 26px;
+    margin-left: 26px;
+    padding-left: 34px;
+    border-left: 3px dotted var(--color-pink);
+  }
+  .stop {
+    position: relative;
+    left: auto;
+    top: auto;
+    display: block;
+    place-items: normal;   /* undo the centring used on desktop */
+    width: auto;
+    height: auto;
+    transform: none;
+    background: none;
+    box-shadow: none;
+    color: var(--color-white);
+    font-size: 15px;
+    text-align: left;
+  }
+  .stop--start { display: none; }
+  .stop__number {
+    position: absolute;
+    left: -62px;
+    top: 0;
+    width: 44px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-pink);
+    color: var(--color-wine);
+    box-shadow: 0 7px 0 var(--color-stop-edge);
+  }
+  .stop__label {
+    position: static;
+    width: auto;
+    transform: none;
+    font-size: 14px;
+    text-align: left;
+  }
+  .stop__title { font-size: 20px; }
+
+  /* Founder card */
+  .card--founder { height: 420px; font-size: 14px; }
+  .card__caption-title { font-size: 20px; }
+}

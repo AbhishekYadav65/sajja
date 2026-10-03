@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sajja – handmade quilted bags</title>
+
+  <!-- Fonts: Playfair Display (headings) and DM Sans (body) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500;700&display=swap">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+
+  <main class="hero">
+
+    <!-- Navigation -->
+    <header class="site-nav">
+      <img class="site-nav__logo" src="assets/logo.png" alt="Sajja">
+      <ul class="site-nav__links">
+        <li><a class="site-nav__link" href="#">Home</a></li>
+        <li><a class="site-nav__link" href="#">Shop</a></li>
+        <li><a class="site-nav__link" href="#">Our story</a></li>
+        <li><a class="site-nav__link" href="#">Contact</a></li>
+      </ul>
+      <a class="button button--primary" href="#">Order now</a>
+    </header>
+
+    <!-- The 16:9 board: everything below is positioned on it -->
+    <div class="hero__board">
+
+      <!-- Pathway line (shape is set in js/config.js) -->
+      <svg class="trail" viewBox="0 0 1152 648" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="trail-gradient" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#f8cfdb"/>
+            <stop offset="1" stop-color="#ffffff"/>
+          </linearGradient>
+        </defs>
+        <path class="trail__glow"/>
+        <path class="trail__line"/>
+        <path class="trail__dashes"/>
+      </svg>
+
+      <!-- Headline -->
+      <section class="headline">
+        <h1 class="headline__title">Soft to carry,<br>stitched by hand.</h1>
+        <p class="headline__text">Handmade quilted bags and laptop sleeves, sent to your door.</p>
+      </section>
+
+      <!-- Bag photos (position of each is set in css/style.css, section 6) -->
+      <div class="gallery">
+        <figure class="card card--sleeves">
+          <img src="assets/bag-sleeves.webp" alt="Gingham, striped and denim quilted laptop sleeves">
+        </figure>
+        <figure class="card card--tote">
+          <img src="assets/bag-tote.webp" alt="Navy quilted tote with a gingham bow charm">
+        </figure>
+        <figure class="card card--heart">
+          <img src="assets/bag-heart-sleeve.webp" alt="Red heart-print laptop sleeve">
+        </figure>
+      </div>
+
+      <!-- The journey from order to delivery.
+           data-stop must match a key in STOPS in js/config.js. -->
+      <ol class="stops">
+        <li class="stop" data-stop="order">
+          <span class="stop__number">1</span>
+          <div class="stop__label stop__label--above-left">
+            <b class="stop__title">Order</b>
+            Your order is received with care.
+          </div>
+        </li>
+
+        <li class="stop" data-stop="confirmed">
+          <span class="stop__number">1</span>
+          <div class="stop__label stop__label--above-left">
+            <b class="stop__title">Confirmed</b>
+            We check your colour, size and details.
+          </div>
+        </li>
+
+        <li class="stop" data-stop="handcrafted">
+          <span class="stop__number">2</span>
+          <div class="stop__label stop__label--above-left">
+            <b class="stop__title">Handcrafted</b>
+            Cut, quilted and stitched in our studio.
+          </div>
+        </li>
+
+        <li class="stop" data-stop="packed">
+          <span class="stop__number">3</span>
+          <div class="stop__label stop__label--below-right">
+            <b class="stop__title">Packed</b>
+            Checked, tagged and wrapped with care.
+          </div>
+        </li>
+
+        <li class="stop" data-stop="delivered">
+          <span class="stop__number">4</span>
+          <div class="stop__label stop__label--below">
+            <b class="stop__title">Delivered</b>
+            At your door, ready to use.
+          </div>
+        </li>
+      </ol>
+
+      <!-- Little box that travels along the line -->
+      <div class="parcel" aria-hidden="true"></div>
+
+      <!-- Founder -->
+      <figure class="card card--founder">
+        <img src="assets/founder.png" alt="The founder of Sajja, sitting among fabrics">
+        <figcaption class="card__caption">
+          <b class="card__caption-title">Made by hand, one stitch at a time</b>
+          Meet the founder behind Sajja.
+        </figcaption>
+      </figure>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">Sajja · handmade with care</footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

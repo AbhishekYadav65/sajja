@@ -1,0 +1,325 @@
+/* ==========================================================================
+   STYLE (desktop first; phone overrides live in mobile.css)
+
+   Contents
+   1. Base
+   2. Hero (page area) and board (the fixed 16:9 canvas)
+   3. Navigation and buttons
+   4. Pathway line
+   5. Headline
+   6. Cards (bag photos + founder)
+   7. Stops (the 4 steps) and their labels
+   8. Parcel
+   9. Footer
+   10. Reduced motion
+   ========================================================================== */
+
+
+/* 1. BASE ================================================================= */
+
+:root {
+  box-sizing: border-box;
+  /* keep content clear of phone notches */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+body {
+  background: var(--color-wine-dark);
+  color: var(--color-white);
+  font: 400 15px/1.5 var(--font-body);
+  overflow-x: hidden;
+}
+
+
+/* 2. HERO + BOARD ========================================================= */
+/* .hero fills the screen. .board is a 16:9 canvas centred inside it, so the
+   layout looks the same on any monitor. Everything on the board is placed in
+   percentages of the board. */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 600px at 82% 8%,  rgba(248, 207, 219, 0.22), transparent 60%),
+    radial-gradient(700px 600px at 8% 95%,  rgba(255, 255, 255, 0.10), transparent 60%),
+    linear-gradient(135deg, var(--color-wine-light), var(--color-wine-dark));
+}
+
+.hero__board {
+  position: relative;
+  flex: none;
+  width: min(100%, calc(100svh * 16 / 9)); /* as wide as fits, never taller than the screen */
+  aspect-ratio: 16 / 9;
+  container-type: inline-size;             /* enables cqw units for children */
+  perspective: 1400px;                     /* depth for the 3D card tilt */
+}
+
+
+/* 3. NAVIGATION + BUTTONS ================================================= */
+
+.site-nav {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 3.5%;
+}
+
+.site-nav__logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.site-nav__links {
+  display: flex;
+  gap: 34px;
+  list-style: none;
+  padding: 0;
+}
+
+.site-nav__link {
+  color: var(--color-white);
+  font-weight: 500;
+  text-decoration: none;
+}
+.site-nav__link:hover,
+.site-nav__link:focus-visible {
+  color: var(--color-pink);
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 5px 0 var(--color-button-edge), 0 12px 20px rgba(0, 0, 0, 0.35);
+}
+.button--primary {
+  background: var(--color-pink);
+  color: var(--color-wine);
+}
+.button:active {                 /* pressed-down effect */
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--color-button-edge);
+}
+
+
+/* 4. PATHWAY LINE ========================================================= */
+/* The shape of the line is set in js/config.js (PATH_POINTS). Its look is here. */
+
+.trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: visible;
+  /* fade out at the left and right ends */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 91%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 91%, transparent 100%);
+}
+
+.trail path {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;   /* line keeps its thickness when the board scales */
+}
+.trail__glow   { stroke: var(--color-pink);  stroke-width: 16; opacity: 0.18; filter: blur(8px); }
+.trail__line   { stroke: url(#trail-gradient); stroke-width: 4; }
+.trail__dashes { stroke: var(--color-wine);  stroke-width: 2; stroke-dasharray: 2 14; opacity: 0.8; }
+
+
+/* 5. HEADLINE ============================================================= */
+
+.headline {
+  position: absolute;
+  z-index: 3;
+  left: 37%;
+  top: 13%;
+  width: 27%;
+}
+.headline__title {
+  font: 500 max(28px, 2.9cqw) / 1.05 var(--font-display);
+  letter-spacing: -0.02em;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+.headline__text {
+  margin-top: 12px;
+  color: var(--color-pink);
+  font-size: max(12px, 1.05cqw);
+  font-weight: 500;
+}
+
+
+/* 6. CARDS ================================================================ */
+/* Every card is positioned with four variables, set on its modifier below:
+     --x, --y   distance from the board's left / top edge
+     --w, --h   width / height
+     --tilt     resting 3D rotation        (optional)
+     --delay    offset for the floating motion (optional)
+     --radius, --border   corner rounding / white frame width (optional)  */
+
+.card {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  z-index: var(--layer, 2);
+  overflow: hidden;
+  background: var(--color-blush);
+  border: var(--border, 5px) solid var(--color-white);
+  border-radius: var(--radius, 20px);
+  box-shadow: 0 40px 60px -10px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(248, 207, 219, 0.5);
+  transform:
+    rotateY(calc(var(--mx, 0) * var(--tilt-strength-y) + var(--tilt, 0deg)))
+    rotateX(calc(var(--my, 0) * var(--tilt-strength-x) * -1));
+  transition: transform 0.25s ease-out;
+  animation: float var(--float-duration) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+.card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes float { to { translate: 0 var(--float-distance); } }
+
+/* Bag photos (top-left cluster) */
+.card--sleeves { --x: 4.5%;  --y: 21%; --w: 19%; --h: 33%; --tilt: 10deg;  --layer: 2; --delay: 0s; }
+.card--tote    { --x: 14.5%; --y: 10%; --w: 21%; --h: 40%; --tilt: -7deg;  --layer: 3; --delay: -2s; }
+.card--heart   { --x: 31%;   --y: 36%; --w: 10%; --h: 17%; --tilt: -12deg; --layer: 4; --delay: -4s;
+                 --radius: 50% 50% 16px 16px; }
+.card--tote img { object-position: 50% 62%; }
+
+/* Founder photo (bottom-right) */
+.card--founder { --x: 63%; --y: 46%; --w: 34%; --h: 50%; --tilt: -6deg; --delay: -3s;
+                 --radius: 26px; --border: 6px; }
+.card--founder img { object-position: 50% 22%; }
+
+.card__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 70px 24px 20px;
+  background: linear-gradient(transparent, rgba(61, 11, 25, 0.92));
+  color: var(--color-white);
+  font-size: max(12px, 1cqw);
+}
+.card__caption-title {
+  display: block;
+  font: 500 max(16px, 1.6cqw) / 1.15 var(--font-display);
+}
+
+
+/* 7. STOPS (the 4 steps) ================================================== */
+/* Where each stop sits is set in js/config.js (STOPS + PATH_POINTS); the script
+   writes --x and --y onto each .stop. */
+
+.stops {
+  display: contents;      /* lets each stop be positioned against the board */
+  list-style: none;
+  padding: 0;
+}
+
+.stop {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  width: var(--stop-width);
+  height: var(--stop-height);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 35% 22%, var(--color-white) 0, var(--color-pink) 48%, var(--color-pink-deep) 100%);
+  color: var(--color-wine);
+  font: 700 max(12px, 1.15cqw) var(--font-display);
+  box-shadow:
+    0 var(--stop-thickness) 0 -1px var(--color-stop-edge),   /* coin edge */
+    0 2cqw 2cqw rgba(0, 0, 0, 0.45),                          /* drop shadow */
+    inset 0 -5px 8px rgba(125, 31, 59, 0.3);                  /* inner shading */
+}
+.stop--start {
+  width: var(--stop-start-size);
+  height: var(--stop-start-size);
+  font: 700 max(11px, 0.85cqw) var(--font-body);
+}
+.stop__number { display: contents; }   /* on desktop the number sits inside the stop */
+
+.stop__label {
+  position: absolute;
+  width: var(--label-width);
+  color: var(--color-white);
+  font: 400 max(11px, 0.9cqw) / 1.4 var(--font-body);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+.stop__title {
+  display: block;
+  margin-bottom: 2px;
+  font: 500 max(15px, 1.4cqw) var(--font-display);
+}
+
+/* Where the label sits relative to its stop */
+.stop__label--above-left  { right: calc(100% - 8px); bottom: calc(100% + 4px); text-align: right; }
+.stop__label--below-right { left: calc(100% - 14px); top: calc(100% + 16px); }
+.stop__label--below       { left: 50%; top: calc(100% + 20px); transform: translateX(-50%); text-align: center; }
+
+
+/* 8. PARCEL =============================================================== */
+/* The little box that travels along the line (moved by js/main.js). */
+
+.parcel {
+  position: absolute;
+  z-index: 6;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;     /* centre on its coordinates */
+  border-radius: 5px;
+  background: linear-gradient(135deg, var(--color-white), var(--color-pink));
+  box-shadow: 0 0 0 3px var(--color-wine), 0 0 22px 6px rgba(248, 207, 219, 0.8);
+  pointer-events: none;
+}
+.parcel::after {               /* ribbon */
+  content: "";
+  position: absolute;
+  inset: 0 9px;
+  background: var(--color-wine-light);
+}
+
+
+/* 9. FOOTER =============================================================== */
+
+.site-footer {
+  padding: 18px 20px calc(18px + env(safe-area-inset-bottom, 0px));
+  background: var(--color-blush);
+  color: var(--color-wine);
+  font-weight: 500;
+  text-align: center;
+}
+
+
+/* 10. REDUCED MOTION ====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; transition: none; }
+}
